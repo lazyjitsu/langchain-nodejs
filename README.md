@@ -12,3 +12,7 @@ $ npm install langchain @langchain/openai
 npm install dotenv
 # optional
 npm install zod  # for output formatting
+
+## Langchain documents
+Simply an object that contains text as well as some optional meta data such as the source from which that text was extracted (i.e website url, PDF name etc..)
+
