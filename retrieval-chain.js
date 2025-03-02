@@ -2,6 +2,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import {createStuffDocumentsChain} from 'langchain/chains/combine_documents';
 import { CheerioWebBaseLoader} from "@langchain/community/document_loaders/web/cheerio";
+import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -16,22 +17,29 @@ const prompt = ChatPromptTemplate.fromTemplate(`
         Context: {context}
         Question: {input}
 `)
+const marcoResume = "marco.pdf";
+const loaderpdf = new PDFLoader(marcoResume);
 
 const chain = await createStuffDocumentsChain({
     llm:model,
     prompt
 });
 
-const loader = new CheerioWebBaseLoader(
-    "https://chiton-grapefruit-y69w.squarespace.com/natomas",
+// const loader = new CheerioWebBaseLoader(
+//     "https://chiton-grapefruit-y69w.squarespace.com/natomas",
+//     {
+//         selector: ".menu-item-description",
+//     }
 
-)
+// )
 
-const docos = await loader.load();
+const pdfdoc = await loaderpdf.load();
+
+// const docos = await loader.load();
 // console.log(docos)
 const resp = await chain.invoke({
-    input: "What's is in a sicilian pizza?",
-    context: []
+    input: "What is marco's phone number?",
+    context: pdfdoc
 })
 
-console.log(docos[0]);
+console.log(resp);
