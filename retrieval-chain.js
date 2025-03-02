@@ -1,7 +1,7 @@
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { Document } from '@langchain/core/documents';
 import {createStuffDocumentsChain} from 'langchain/chains/combine_documents';
+import { CheerioWebBaseLoader} from "@langchain/community/document_loaders/web/cheerio";
 
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -22,16 +22,16 @@ const chain = await createStuffDocumentsChain({
     prompt
 });
 
-// Documents
-const documentA = new Document({
-    pageContent: "Marko is a Muay Thai Fighter"
-})
-const documentB = new Document({
-    pageContent: "Wild Style Crew Breakers are the best"
-})
+const loader = new CheerioWebBaseLoader(
+    "https://chiton-grapefruit-y69w.squarespace.com/natomas",
+
+)
+
+const docos = await loader.load();
+// console.log(docos)
 const resp = await chain.invoke({
-    input: "What crew is the best at breaking?",
-    context: [documentA,documentB]
+    input: "What's is in a sicilian pizza?",
+    context: []
 })
 
-console.log(resp);
+console.log(docos[0]);
