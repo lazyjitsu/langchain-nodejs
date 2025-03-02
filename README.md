@@ -10,3 +10,5 @@ $ npm install langchain @langchain/openai
 
 # for api key in the enviornment file in .env
 npm install dotenv
+# optional
+npm install zod  # for output formatting
