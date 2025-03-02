@@ -13,7 +13,10 @@ const model = new ChatOpenAI({
 
 // Instruct the model to behave in a certain way using prompt templates
 
-const prompt = ChatPromptTemplate.fromTemplate('You are a comedian. Tell a joke based on the following word {input}');
+const prompt = ChatPromptTemplate.fromMessages([
+    ["system","Generate a joke based on a word provided by theuser."],
+    ["human","{input}"],
+])
 
 // Create a chain
 const chain = prompt.pipe(model);
