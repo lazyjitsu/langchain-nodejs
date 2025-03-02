@@ -12,8 +12,6 @@ const model = new ChatOpenAI({
 });
 
 async function callStringOputpuParser() {
-
-}
 // Create prompt template
 const prompt = ChatPromptTemplate.fromMessages([
     ["system","Generate a joke based on a word provided by theuser."],
@@ -28,8 +26,10 @@ const parser = new StringOutputParser();
 const chain = prompt.pipe(model).pipe(parser);
 
 // Call chain
-const resp = await chain.invoke({
+return await chain.invoke({
     input: "dog"
 })
-// console.log(await prompt.format({ input: "chicken"}))
-console.log(resp)
+}
+
+const resp = await callStringOputpuParser();
+console.log(resp);
