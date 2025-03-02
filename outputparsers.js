@@ -1,8 +1,9 @@
 import { ChatOpenAI } from '@langchain/openai';
 import { ChatPromptTemplate } from '@langchain/core/prompts';
-import { StringOutputParser } from '@langchain/core/output_parsers';
+import { StringOutputParser, CommaSeparatedListOutputParser } from '@langchain/core/output_parsers';
 
 import * as dotenv from "dotenv";
+import { mode } from 'mathjs';
 
 dotenv.config();
 
@@ -31,5 +32,18 @@ return await chain.invoke({
 })
 }
 
-const resp = await callStringOputpuParser();
+async function callListOutputParser() {
+    const prompt = ChatPromptTemplate.fromTemplate(`
+            Provide 5 synonyms, seperated by commas, for the followign word {word}
+        `);
+
+        const outputParser = new CommaSeparatedListOutputParser();
+
+        const chain = prompt.pipe(model).pipe(outputParser);
+
+        return await chain.invoke({
+            word: 'happy',
+        })
+}
+const resp = await callListOutputParser();
 console.log(resp);
